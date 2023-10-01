@@ -8,5 +8,6 @@ class BankAdmin(admin.ModelAdmin):
 class MappedUserAdmin(admin.ModelAdmin):
     list_display = ["bank","user"]
 admin.site.register(UserBankMapping,MappedUserAdmin)
+admin.site.register(Bank,BankAdmin)
 
 

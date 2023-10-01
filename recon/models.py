@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Bank(models.Model):
     name = models.CharField(max_length=50)
-    swift_code = models.CharField(max_length=10)
+    swift_code = models.CharField(max_length=10,unique=True)
+    bank_code = models.CharField(max_length=10,null=True,unique=True)
 
 class UserBankMapping(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
