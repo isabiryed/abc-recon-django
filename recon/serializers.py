@@ -12,3 +12,15 @@ class BankSerializer(serializers.ModelSerializer):
 class LogSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReconciliationLog
+
+class ReconcileSerializer(serializers.Serializer):
+    file = serializers.FileField()
+    swift_code = serializers.CharField(max_length=200)
+
+
+class SabsSerializer(serializers.Serializer):
+    file = serializers.FileField()
+    batch_number = serializers.CharField(max_length=100)
+
+class SettlementSerializer(serializers.Serializer):
+    batch_number = serializers.CharField(max_length=100)
