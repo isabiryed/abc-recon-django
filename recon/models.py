@@ -3,13 +3,17 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Bank(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50,unique=True)
     swift_code = models.CharField(max_length=10,unique=True)
     bank_code = models.CharField(max_length=10,null=True,unique=True)
+    def __str__(self) -> str:
+        return f"{self.name}"
 
 class UserBankMapping(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
     bank = models.ForeignKey(Bank,on_delete=models.CASCADE)
+    def __str__(self) -> str:
+        return f"{self.user.username}:{self.bank.name}"
 
 class ReconciliationLog(models.Model):
     date_time = models.DateTimeField(db_column='DATE_TIME', blank=True, null=True)  # Field name made lowercase.
