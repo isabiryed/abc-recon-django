@@ -76,19 +76,35 @@ WSGI_APPLICATION = 'abc_recon.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mssql',
+#         'NAME': 'BusinessIntelligence',
+#         'HOST': 'abcbusinessintelligence.database.windows.net',
+#         'PASSWORD':"Vp85FRFXYf2KBr@",
+#         'USER':"isabiryed",
+#         'PORT':"1433",
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',
+#         },
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
         'NAME': 'BusinessIntelligence',
-        'HOST': 'abcbusinessintelligence.database.windows.net',
-        'PASSWORD':"Vp85FRFXYf2KBr@",
-        'USER':"isabiryed",
-        'PORT':"1433",
+        'USER': '',  
+        'PASSWORD': '',
+        'HOST': 'ISABIRYEDICKSON',  
+        'PORT': '',  
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
+            'trusted_connection': 'yes',  
         },
     }
 }
+
+
 
 
 # Password validation

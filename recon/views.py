@@ -179,7 +179,7 @@ class ReconStatsView(APIView):
                 # Assume recon_stats_req returns a list of dictionaries or None
                 data = recon_stats_req(server, database, username, password, Swift_code_up)
                 if data is None:
-                    return Response({'error': 'No data found'}, status=status.HTTP_404_NOT_FOUND)
+                    return Response({'error': 'No data found'}, status=status.HTTP_404_NOT_FOUND)              
                 
                 return Response(data, status=status.HTTP_200_OK)
 
