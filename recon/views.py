@@ -3,15 +3,8 @@ from zipfile import ZipFile
 from django.http import FileResponse, Http404
 from django.shortcuts import render
 from rest_framework import generics,status
-from recon.db_exceptions import select_exceptions
-from recon.setle_sabs import setleSabs
-from recon.setlement_ import settle
-
-from .db_reversals import select_reversals
-
-from .mainFile import reconcileMain, unserializable_floats
-
-from .db_recon_stats import recon_stats_req
+from .utils import select_exceptions,select_reversals,recon_stats_req,unserializable_floats
+from .main import settlement_main,setlement_recon_main,reconcileMain
 
 from .models import Reconciliation,ReconciliationLog
 from .serializers import ReconcileSerializer, ReconciliationSerializer, SabsSerializer, SettlementSerializer
@@ -135,7 +128,7 @@ class ExceptionsView(APIView):
         # The data returned by select_exceptions is assumed to be in a suitable format for JSON serialization
 
         return Response(data, status=status.HTTP_200_OK)
-    
+   
 class ReconciledDataView(APIView):
     """
     Retrieve reconciled data.
@@ -203,7 +196,7 @@ class sabsreconcile_csv_filesView(APIView):
 
             try:
                 # Assume setleSabs returns dataframes as one of its outputs
-                _, matched_setle, _, unmatched_setlesabs = setleSabs(temp_file_path, batch_number)
+                _, matched_setle, _, unmatched_setlesabs = setlement_recon_main(temp_file_path, batch_number)
                 
                 # Perform clean up: remove the temporary file after processing
                 os.remove(temp_file_path)
@@ -224,13 +217,7 @@ class sabsreconcile_csv_filesView(APIView):
                 response['Content-Disposition'] = 'attachment; filename=Settlement_.zip'
                 return response
             
-            # this one below doesnt return a zipped file. gets a decode error
-                # memory_file.seek(0)
-
-                # response = Response(memory_file, content_type='application/zip')
-                # response['Content-Disposition'] = 'attachment; filename=Settlement_recon_files.zip'
-                # return response
-
+                           
             except Exception as e:
                 # If there's an error during the process, ensure the temp file is removed
                 if os.path.exists(temp_file_path):
@@ -251,7 +238,7 @@ class SettlementView(APIView):
 
             try:
                 # Assume the settle function is defined and available here
-                settlement_result = settle(batch_number)
+                settlement_result = settlement_main(batch_number)
 
                 # Handle case where no records were found or an error occurred in settle
                 if settlement_result is None or settlement_result.empty:
